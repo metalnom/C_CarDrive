@@ -2,7 +2,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include "ncurses.h"
-#include "MotorHat.h"
+#include "MotorHat.hpp"
 
 #define AtoPWM(x) 8.3*(x)+1250
 

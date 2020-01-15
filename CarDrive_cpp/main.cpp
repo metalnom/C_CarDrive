@@ -5,7 +5,7 @@
 #include "sys/timeb.h"
 #include <linux/uinput.h>
 #include <unistd.h>
-#include "MotorHat.h"
+#include "MotorHat.hpp"
 
 int main(void) {
     CarDrive CarD;
