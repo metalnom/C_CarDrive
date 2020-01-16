@@ -129,13 +129,19 @@ void CarDrive::WheelStop(int DC_num) {
 }
 
 void CarDrive::InitMotorHat(int M_kind) {
-    unsigned char oldmode, newmode;
+    unsigned char mode1, oldmode, newmode;
     float prescale;
 
     fd = wiringPiI2CSetup(0x70);
 
     wiringPiI2CWriteReg8(fd, 0x01, 0x04);
     wiringPiI2CWriteReg8(fd, 0x00, 0x01);
+    usleep(5000);
+
+    mode1 = wiringPiI2CReadReg8(fd, 0x00);
+    mode1 = mode1 & ~0x10;
+    wiringPiI2CWriteReg8(fd, 0x00, mode1);
+
     usleep(5000);
 
     prescale = 25000000.0;
@@ -175,10 +181,10 @@ void CarDrive::ControlCar(void) {
             WheelPWM(3, 2000);
             WheelPWM(4, 2000);
 
-            WheelBackward(1);
-            WheelBackward(2);
-            WheelBackward(3);
-            WheelBackward(4);
+            WheelForward(1);
+            WheelForward(2);
+            WheelForward(3);
+            WheelForward(4);
         }
 
         if(ch == 'x' || ARROW_DOWN) {
@@ -187,10 +193,10 @@ void CarDrive::ControlCar(void) {
             WheelPWM(3, 2000);
             WheelPWM(4, 2000);
 
-            WheelForward(1);
-            WheelForward(2);
-            WheelForward(3);
-            WheelForward(4);
+            WheelBackward(1);
+            WheelBackward(2);
+            WheelBackward(3);
+            WheelBackward(4);
         }
 
         if(ch == 'a' || ARROW_LEFT) {

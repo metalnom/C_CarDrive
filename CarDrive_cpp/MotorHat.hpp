@@ -21,6 +21,4 @@ class CarDrive {
         void WheelStop(int);
         void InitMotorHat(int);
         void ControlCar(void);
-    
-    ~CarDrive();
 };

@@ -1,10 +1,10 @@
-#include <stdlib.h>
+
 #include "ncurses.h"
 #include "fcntl.h"
 #include <time.h>
 #include "sys/timeb.h"
 #include <linux/uinput.h>
-#include <unistd.h>
+
 #include "MotorHat.h"
 
 #define ARROW_UP 3
@@ -14,92 +14,100 @@
 
 float Angle;
 
-void Control_Car(void) {
-    char ch;
+void Control_Car(void){
+	char ch;
+	//wchar_t ch;
+	
+	while( 1 ){
 
-    while(1) {
-        WheelStop(1);
-        WheelStop(2);
-        WheelStop(3);
-        WheelStop(4);
+	        //usleep(20000);
+		StopMotor(1);
+		StopMotor(2);	
 
-        ch = getch();
 
-        if(ch == 0xE0) ch = getch();
+		//sleep(1)
+		ch=getch();
 
-        if(ch == 'w' || ch == ARROW_UP) {
-            WheelPWM(1, 2000);
-            WheelPWM(2, 2000);
-            WheelPWM(3, 2000);
-            WheelPWM(4, 2000);
+		if (ch == 0xE0) ch=getch();
+		
 
-            WheelBackward(1);
-            WheelBackward(2);
-            WheelBackward(3);
-            WheelBackward(4);
-        }
+		if (ch == 'w' || ch == ARROW_UP) {
 
-        if(ch == 'x' || ARROW_DOWN) {
-            WheelPWM(1, 2000);
-            WheelPWM(2, 2000);
-            WheelPWM(3, 2000);
-            WheelPWM(4, 2000);
+			setPWM(1,2000);
+			setPWM(2,2000); 
 
-            WheelForward(1);
-            WheelForward(2);
-            WheelForward(3);
-            WheelForward(4);
-        }
+			RotateBackward(1);
+			RotateBackward(2);
 
-        if(ch == 'a' || ARROW_LEFT) {
-            WheelPWM(1, 2000);
-            WheelPWM(2, 2000);
-            WheelPWM(3, 2000);
-            WheelPWM(4, 2000);
+			
+		}
+	
+		else if (ch == 'x' || ch == ARROW_DOWN) {
 
-            WheelForward(1);
-            WheelBackward(2);
-            WheelBackward(3);
-            WheelForward(4);
-        }
+			setPWM(1,2000);
+			setPWM(2,2000); 
 
-        if(ch == 'd' || ARROW_RIGHT) {
-            WheelPWM(1, 2000);
-            WheelPWM(2, 2000);
-            WheelPWM(3, 2000);
-            WheelPWM(4, 2000);
+			RotateForward(1);
+			RotateForward(2);
 
-            WheelBackward(1);
-            WheelForward(2);
-            WheelForward(3);
-            WheelBackward(4);
-        }
+		}
 
-        if(ch == 'o') Angle = Angle + 5;
-        else if(ch == 'p') Angle = Angle - 5;
+		else if (ch == 'a'|| ch == ARROW_LEFT) {
 
-        if(Angle > 50) Angle = 40;
-        if(Angle < -50) Angle = -40;
+			setPWM(2,2000);
+			
+			RotateBackward(2);
+			
+		
+		}
 
-        ServoControl(1, Angle);
+		else if (ch == 'd' || ch == ARROW_RIGHT) {
 
-        if(ch == 'q') {
-            endwin();
-            exit(0);
-        }
-        usleep(20000);
-    }
+			
+			setPWM(1,2000); 
+
+			RotateBackward(1);
+
+			
+		}
+
+		if (ch == 'o') Angle = Angle +2;
+		else if (ch == 'p') Angle=Angle-2;
+
+		if (Angle > 50) Angle =40;
+		if (Angle < -50) Angle = -40;
+
+		ServoControl(1,Angle);
+
+		
+		
+        	if (ch == 'q') {
+	            endwin();
+		    //system("sudo halt");
+	            exit(0);
+        	}
+		usleep(20000);
+
+	}
 }
 
-int main(void) {
-    InitMotorHat(SG90);
+int main(int argc, char *argv[]){
+
+    InitAdaFruit(SG90);
+
     initscr();
-    keypad(stdscr, true);
+
+    keypad(stdscr,true);
+    
     noecho();
+
     wiringPiSetupGpio();
 
-    Angle = 0;
-    ServoControl(1, Angle);
+    
+    Angle=0;
+    ServoControl(1,Angle);
+
     Control_Car();
-    return 0;
+
+	return 0;
 }
