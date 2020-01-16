@@ -1,4 +1,3 @@
-
 #include "ncurses.h"
 #include "fcntl.h"
 #include <time.h>
@@ -16,97 +15,90 @@ float Angle;
 
 void Control_Car(void){
 	char ch;
-	//wchar_t ch;
 	
 	while( 1 ){
-
-	        //usleep(20000);
 		StopMotor(1);
-		StopMotor(2);	
+		StopMotor(2);
+		StopMotor(3);
+		StopMotor(4);	
 
-
-		//sleep(1)
 		ch=getch();
 
 		if (ch == 0xE0) ch=getch();
-		
 
 		if (ch == 'w' || ch == ARROW_UP) {
-
 			setPWM(1,2000);
-			setPWM(2,2000); 
-
-			RotateBackward(1);
-			RotateBackward(2);
-
-			
-		}
-	
-		else if (ch == 'x' || ch == ARROW_DOWN) {
-
-			setPWM(1,2000);
-			setPWM(2,2000); 
+			setPWM(2,2000);
+		    setPWM(3,2000);
+			setPWM(4,2000);	
 
 			RotateForward(1);
 			RotateForward(2);
+			RotateForward(3);
+			RotateForward(4);
+		}
+	
+		else if (ch == 'x' || ch == ARROW_DOWN) {
+			setPWM(1,2000);
+			setPWM(2,2000);
+		    setPWM(3,2000);
+			setPWM(4,2000);	
 
+			RotateBackward(1);
+			RotateBackward(2);
+			RotateBackward(3);
+			RotateBackward(4);
 		}
 
 		else if (ch == 'a'|| ch == ARROW_LEFT) {
-
+			setPWM(1,2000);
 			setPWM(2,2000);
+			setPWM(3,2000);
+			setPWM(4,2000);
 			
+			RotateForward(1);
 			RotateBackward(2);
-			
-		
+			RotateBackward(3);
+			RotateForward(4);
 		}
 
 		else if (ch == 'd' || ch == ARROW_RIGHT) {
-
-			
-			setPWM(1,2000); 
+			setPWM(1,2000);
+		    setPWM(2,2000);
+			setPWM(3,2000);
+			setPWM(4,2000);	
 
 			RotateBackward(1);
-
-			
+			RotateForward(2);
+			RotateForward(3);
+			RotateBackward(4);
 		}
 
-		if (ch == 'o') Angle = Angle +2;
-		else if (ch == 'p') Angle=Angle-2;
+		if (ch == 'o') Angle = Angle +4;
+		else if (ch == 'p') Angle=Angle-4;
 
 		if (Angle > 50) Angle =40;
 		if (Angle < -50) Angle = -40;
 
 		ServoControl(1,Angle);
-
 		
-		
-        	if (ch == 'q') {
-	            endwin();
-		    //system("sudo halt");
-	            exit(0);
-        	}
+       	if (ch == 'q') {
+	        endwin();
+	        exit(0);
+		}
 		usleep(20000);
-
 	}
 }
 
 int main(int argc, char *argv[]){
-
     InitAdaFruit(SG90);
-
     initscr();
-
     keypad(stdscr,true);
-    
     noecho();
-
     wiringPiSetupGpio();
-
     
     Angle=0;
     ServoControl(1,Angle);
-
     Control_Car();
 
 	return 0;
