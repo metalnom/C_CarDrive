@@ -8,9 +8,9 @@
 #define ARROW_LEFT 4
 #define ARROW_RIGHT 5
 
-class CarDrive {
+int fd;
 
-    int fd;
+class CarDrive {
 
     public:
         float Angle;

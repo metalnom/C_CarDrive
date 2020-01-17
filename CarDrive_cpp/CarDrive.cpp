@@ -114,16 +114,16 @@ void CarDrive::WheelStop(int DC_num) {
         IN1 = 6;
         IN2 = 5;
     }
-    for(i=4;i>=1;i--) {
+    for(i=4; i>=1; i--) {
         wiringPiI2CWriteReg8(fd, 0x06+4*IN1, 0 & 0xff);
         wiringPiI2CWriteReg8(fd, 0x07+4*IN1, 0 >> 8);
-        wiringPiI2CWriteReg8(fd, 0x08+4*IN1, 4096/i & 0xff);
-        wiringPiI2CWriteReg8(fd, 0x09+4*IN1, 4096/i >> 8);
+        wiringPiI2CWriteReg8(fd, 0x08+4*IN1, 4096 & 0xff);
+        wiringPiI2CWriteReg8(fd, 0x09+4*IN1, 4096 >> 8);
 
         wiringPiI2CWriteReg8(fd, 0x06+4*IN2, 0 & 0xff);
         wiringPiI2CWriteReg8(fd, 0x07+4*IN2, 0 >> 8);
-        wiringPiI2CWriteReg8(fd, 0x08+4*IN2, 4096/i & 0xff);
-        wiringPiI2CWriteReg8(fd, 0x09+4*IN2, 4096/i >> 8);
+        wiringPiI2CWriteReg8(fd, 0x08+4*IN2, 4096 & 0xff);
+        wiringPiI2CWriteReg8(fd, 0x09+4*IN2, 4096 >> 8);
         usleep(5000);
     }
 }
@@ -223,8 +223,8 @@ void CarDrive::ControlCar(void) {
             WheelBackward(4);
         }
 
-        if(ch == 'o') Angle = Angle + 5;
-        else if(ch == 'p') Angle = Angle - 5;
+        if(ch == 'o') Angle = Angle + 4;
+        else if(ch == 'p') Angle = Angle - 4;
 
         if(Angle > 50) Angle = 40;
         if(Angle < -50) Angle = -40;

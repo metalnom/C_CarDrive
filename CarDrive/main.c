@@ -90,7 +90,7 @@ void Control_Car(void){
 	}
 }
 
-int main(int argc, char *argv[]){
+int main(){
     InitAdaFruit(SG90);
     initscr();
     keypad(stdscr,true);
