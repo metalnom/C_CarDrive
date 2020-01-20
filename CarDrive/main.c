@@ -77,8 +77,8 @@ void Control_Car(void){
 		if (ch == 'o') Angle = Angle +4;
 		else if (ch == 'p') Angle=Angle-4;
 
-		if (Angle > 50) Angle =40;
-		if (Angle < -50) Angle = -40;
+		if (Angle > 24) Angle = 20;
+		if (Angle < -24) Angle = -20;
 
 		ServoControl(1,Angle);
 		
